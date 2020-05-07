@@ -1,0 +1,1 @@
+rmarkdown::render("power_report.Rmd")

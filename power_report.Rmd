@@ -1,0 +1,37 @@
+---
+title: "Power_Report"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(tidyverse)
+library(lubridate)
+
+col_names <-  c('HDF', 'date', 'half_hour_increment',
+                                                        'CCGT', 'OIL', 'COAL', 'NUCLEAR',
+                                                                'WIND', 'PS', 'NPSHYD', 'OCGT',
+                                                                'OTHER', 'INTFR', 'INTIRL', 'INTNED',
+                                                                'INTEW', 'BIOMASS', 'INTEM')
+df <- read.csv('data.csv',header = FALSE,col.names = col_names,stringsAsFactors = FALSE)
+
+#remove the first and last row
+df <- df[-1,]
+df <- df[-nrow(df),]
+
+#Tidy the data
+df_tidy <- df %>% gather('CCGT', 'OIL', 'COAL', 'NUCLEAR',                                        'WIND', 'PS', 'NPSHYD', 'OCGT',                                                                       'OTHER', 'INTFR', 'INTIRL', 'INTNED',                                                               'INTEW', 'BIOMASS', 'INTEM',key="fuel", value="megawatt")
+```
+
+``` {r, warning=FALSE}
+df_tidy <- df_tidy %>% mutate(datetime=as.POSIXct(as.Date(date, "%Y%m%d"))+minutes(30*(half_hour_increment-1)))
+print(head(df_tidy))
+```
+
+```{r, echo=FALSE}
+p <- ggplot(data=df_tidy, aes(x=datetime, y=megawatt, group=fuel)) +
+  geom_line(aes(color=fuel))
+print(p)
+```
+
+
