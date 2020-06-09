@@ -8,7 +8,7 @@ col_names <-  c('HDF', 'date', 'half_hour_increment',
                 'INTEW', 'BIOMASS', 'INTEM')
 
 #Load the data into a data frame
-df <- read.csv('data.csv',header = FALSE,col.names = col_names,stringsAsFactors = FALSE)
+df <- read.csv('/domino/datasets/local/BMRS_Power-Generation-Data/data.csv',header = FALSE,col.names = col_names,stringsAsFactors = FALSE)
 
 #remove the first and last row
 df <- df[-1,]
